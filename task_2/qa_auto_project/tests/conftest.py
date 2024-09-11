@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager
 
 
-@pytest.fixture
+@pytest.fixture(scope='class')
 def get_driver() -> WebDriver:
     """Creates, opens, returns and closes browser window"""
 

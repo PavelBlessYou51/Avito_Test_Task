@@ -6,9 +6,9 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 class BasePage:
-    def __init__(self, driver: WebDriver, url: str):
+    def __init__(self, driver: WebDriver):
         self.driver = driver
-        self.url = url
+        self.url = 'https://makarovartem.github.io/frontend-avito-tech-test-assignment/'
 
     def open(self):
         self.driver.get(self.url)
