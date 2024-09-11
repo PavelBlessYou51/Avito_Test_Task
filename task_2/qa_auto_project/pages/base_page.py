@@ -21,5 +21,14 @@ class BasePage:
     def elements_are_visible(self, locator: tuple[str, str], timeout: int = 5) -> list[WebElement]:
         return WebDriverWait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
 
+    def element_is_presents(self, locator: tuple[str, str], timeout: int = 5) -> WebElement:
+        return WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(locator))
+
+    def elements_are_present(self, locator: tuple[str, str], timeout: int = 5) -> list[WebElement]:
+        return WebDriverWait(self.driver, timeout).until(EC.presence_of_all_elements_located(locator))
+
+    def element_is_clickable(self, locator: tuple[str, str], timeout: int = 5) -> WebElement:
+        return WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
+
     def go_to_element(self, element: WebElement):
         self.driver.execute_script("return arguments[0].scrollIntoView(true);", element)
