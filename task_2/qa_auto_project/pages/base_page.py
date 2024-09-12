@@ -1,4 +1,6 @@
 """The module contains basic methods for working with pages of site"""
+import os
+
 from selenium.webdriver.ie.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.wait import WebDriverWait
@@ -32,3 +34,11 @@ class BasePage:
 
     def go_to_element(self, element: WebElement):
         self.driver.execute_script("return arguments[0].scrollIntoView(true);", element)
+
+    def get_screen_shot(self, path: str):
+        self.driver.get_screenshot_as_file(path)
+
+    def get_dir_for_screen(self) -> str:
+        root_dir = os.getcwd() + '\\task_2\\qa_auto_project\\screenshots\\'
+        os.makedirs(root_dir, exist_ok=True)
+        return root_dir

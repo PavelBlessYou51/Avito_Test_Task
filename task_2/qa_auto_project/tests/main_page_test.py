@@ -40,3 +40,12 @@ class TestFromCat2ToCat13:
             assert result_category, f"Filter by category {category} didn't work"
         assert main_page.check_amount_card_element(), 'The element has disappeared from the DOM'
 
+
+class TestCat14:
+
+    def test_reset_filter_by_category(self, get_driver):
+        main_page = MainPage(get_driver)
+        main_page.open()
+        main_page.reset_filtration_by_category()
+        main_page.make_screen()
+        assert main_page.check_main_page(), 'Main Page not found'

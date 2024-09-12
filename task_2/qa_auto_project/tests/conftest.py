@@ -35,5 +35,3 @@ def get_driver() -> WebDriver:
 def provide_data_for_filters(request):
     return request.param
 
-
-pytest.param(2, marks=pytest.mark.skip)

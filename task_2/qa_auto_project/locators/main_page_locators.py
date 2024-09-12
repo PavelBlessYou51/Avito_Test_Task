@@ -25,3 +25,6 @@ GAME_CARDS = (By.CSS_SELECTOR, 'li[class="ant-list-item"]')
 GAME_TITLE = 'h1[class="ant-typography css-17a39f8"]'
 GAME_RELEASE_DATE = 'div[class="ant-space-item"]:nth-of-type(1) div[class="ant-typography css-17a39f8"]'
 GAME_GENRE = 'div[class="ant-space-item"]:nth-of-type(3) div[class="ant-typography css-17a39f8"]'
+
+# Main Page locators
+MAIN_PAGE_TITLE = (By.XPATH, "//h1[contains(text(), 'Main Page')]")

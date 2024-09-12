@@ -1,9 +1,11 @@
 """The module functions for working with Web elements"""
-from datetime import datetime
+import datetime
+import time
 
 from selenium.common import TimeoutException
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
 
 from task_2.qa_auto_project.pages.base_page import BasePage
 from task_2.qa_auto_project.locators import main_page_locators as locators, game_page_locators as game_locators
@@ -11,6 +13,7 @@ from task_2.qa_auto_project.locators import main_page_locators as locators, game
 
 class MainPage(BasePage):
 
+    # ID Cat.1
     def get_filters_status(self) -> tuple[str, str, str]:
         filters = self.elements_are_visible(locators.FILTERS_STATUS)
         platform, category, sort_by = tuple(map(lambda elem: elem.get_attribute('title'), filters))
@@ -27,7 +30,8 @@ class MainPage(BasePage):
         element.click()
         return int(element.text)
 
-    def set_filter(self, filter_type: str, value: str):
+    # ID Cat.2 - Cat.13
+    def set_filter(self, filter_type: str, value: str, reverse_filter: bool = True):
         filter_dict = {
             'platform': {
                 'locators': (locators.FILTER_BY_PLATFORM, locators.FILTER_BY_PLATFORM_INPUT),
@@ -54,7 +58,10 @@ class MainPage(BasePage):
         self.element_is_presents(filter_dict[filter_type]['locators'][0]).click()
         chosen_filter = self.element_is_presents(filter_dict[filter_type]['locators'][1])
         for _ in range(filter_dict[filter_type][value]):
-            chosen_filter.send_keys(Keys.ARROW_DOWN)
+            if reverse_filter:
+                chosen_filter.send_keys(Keys.ARROW_DOWN)
+            else:
+                chosen_filter.send_keys(Keys.ARROW_UP)
         chosen_filter.send_keys(Keys.RETURN)
 
     def go_to_next_page(self):
@@ -82,16 +89,16 @@ class MainPage(BasePage):
                 self.go_to_next_page()
         return flag
 
-    def processing_sort_by(self, sort_type: str) -> list[str | datetime]:
+    def processing_sort_by(self, sort_type: str) -> list[str | datetime.datetime]:
         if sort_type == 'alphabetical':
             list_titles = list(self.get_attribute_of_card('title'))
             return list_titles
         else:
             list_dates = self.get_attribute_of_card('release_date')
-            result_date = list(map(lambda my_date: datetime.strptime(my_date.split()[2], '%d.%m.%Y'), list_dates))
+            result_date = list(map(lambda my_date: datetime.datetime.strptime(my_date.split()[2], '%d.%m.%Y'), list_dates))
             return result_date
 
-    def processing_platform(self, platform_type: str):
+    def processing_platform(self, platform_type: str) -> bool:
         list_of_platform = list()
         for card in range(len(self.get_cards_on_page(False))):
             list_cards = self.get_cards_on_page(False)
@@ -107,9 +114,29 @@ class MainPage(BasePage):
             result = tuple(map(lambda item: 'Web Browser' in item, list_of_platform))
         return all(result)
 
-    def check_amount_card_element(self):
+    def check_amount_card_element(self) -> bool:
         try:
             element = self.element_is_visible(locators.SELECT_AMOUNT_CARDS)
+            return True
+        except TimeoutException:
+            return False
+
+    # ID Cat.14
+    def reset_filtration_by_category(self):
+        self.set_filter('category', 'strategy')
+        self.set_filter('category', 'strategy', False)
+
+    def make_screen(self) -> str:
+        screen_name = 'screen' + f'-{datetime.date.today()}' + '.png'
+        screen_path = self.get_dir_for_screen()
+        path = screen_path + '\\' + screen_name
+        time.sleep(.5)
+        self.get_screen_shot(path)
+        return path
+
+    def check_main_page(self):
+        try:
+            title = self.element_is_visible(locators.MAIN_PAGE_TITLE)
             return True
         except TimeoutException:
             return False
