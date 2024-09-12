@@ -49,3 +49,21 @@ class TestCat14:
         main_page.reset_filtration_by_category()
         main_page.make_screen()
         assert main_page.check_main_page(), 'Main Page not found'
+
+class TestBtn1Btn2:
+
+    def test_back_to_main_btn(self, get_driver):
+        main_page = MainPage(get_driver)
+        main_page.open()
+        main_page.go_into_random_card()
+        main_page.click_on_back_to_main_btn()
+        assert main_page.check_main_page(), 'Main Page not found'
+
+    def test_back_to_main_btn_with_filters(self, get_driver):
+        main_page = MainPage(get_driver)
+        main_page.open()
+        main_page.set_filter('category', 'strategy')
+        main_page.go_into_random_card()
+        main_page.click_on_back_to_main_btn()
+        platform, category, sort_by = main_page.get_filters_status()
+        assert (platform, category, sort_by) != ('not chosen', 'not chosen', 'not chosen'), 'The filters have been disabled'

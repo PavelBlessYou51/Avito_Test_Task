@@ -1,6 +1,7 @@
 """The module functions for working with Web elements"""
 import datetime
 import time
+import random
 
 from selenium.common import TimeoutException
 from selenium.webdriver import Keys
@@ -105,9 +106,7 @@ class MainPage(BasePage):
             list_cards[card].click()
             platform = self.element_is_presents(game_locators.PLATFORM_FIELD).text
             list_of_platform.append(platform)
-            button = self.element_is_clickable(game_locators.BACK_TO_MAIN_BUTTON)
-            self.go_to_element(button)
-            button.click()
+            self.click_on_back_to_main_btn()
         if platform_type == 'PC':
             result = tuple(map(lambda item: 'Windows' in item, list_of_platform))
         else:
@@ -134,9 +133,20 @@ class MainPage(BasePage):
         self.get_screen_shot(path)
         return path
 
-    def check_main_page(self):
+    def check_main_page(self) -> bool:
         try:
             title = self.element_is_visible(locators.MAIN_PAGE_TITLE)
             return True
         except TimeoutException:
             return False
+
+    # ID Btn.1 - Btn.2
+    def click_on_back_to_main_btn(self):
+        button = self.element_is_clickable(game_locators.BACK_TO_MAIN_BUTTON)
+        self.go_to_element(button)
+        button.click()
+
+    def go_into_random_card(self):
+        cards = self.get_cards_on_page(False)
+        randon_card = random.choice(cards)
+        randon_card.click()
