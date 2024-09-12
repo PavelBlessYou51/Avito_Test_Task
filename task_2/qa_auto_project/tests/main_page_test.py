@@ -70,13 +70,13 @@ class TestBtn1Btn2:
         platform, category, sort_by = main_page.get_filters_status()
         assert (platform, category, sort_by) != ('not chosen', 'not chosen', 'not chosen'), 'The filters have been disabled'
 
-class TestPgn1:
+class TestFromPgn1ToPagn7:
 
     @pytest.mark.parametrize('type_button', ['next', 'previous'], ids=['Pgn.1', 'Pgn.2'])
     def test_activity_pagination_btn(self, get_driver, type_button):
         main_page = MainPage(get_driver)
         main_page.open()
-        button_status = main_page.check_pagination_btn(type_button)
+        button_status = main_page.check_activity_pagination_btn(type_button)
         assert button_status == 'true', f'The {type_button} button is active'
 
     def test_pagination_with_simple_btn(self, get_driver):
@@ -98,5 +98,11 @@ class TestPgn1:
         main_page.go_to_previous_five_page(steps)
         previous_page_number = main_page.get_active_page_number()
         assert next_page_number == steps * 5 + 1 and previous_page_number == 1, 'The pagination with five pages buttons work wrong'
+
+    def test_pagination_by_numbers_page(self, get_driver):
+        main_page = MainPage(get_driver)
+        main_page.open()
+        result = main_page.pagination_for_pages()
+        assert result, 'The pagination by pages buttons work wrong'
 
 

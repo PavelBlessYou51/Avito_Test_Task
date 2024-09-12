@@ -164,7 +164,7 @@ class MainPage(BasePage):
         randon_card = random.choice(cards)
         randon_card.click()
 
-    # ID Pgn.17 - Pgn.23
+    # ID Pgn.1 - Pgn.7
     def check_activity_pagination_btn(self, type_button: str) -> str:
         if type_button == 'previous':
             button = self.element_is_presents(locators.NOT_ACTIVE_PREVIOUS_BUTTON)
@@ -178,3 +178,18 @@ class MainPage(BasePage):
         current_page = self.element_is_visible(locators.ACTIVE_PAGE_NUMBER)
         current_page = current_page.get_property('title')
         return int(current_page)
+
+    def pagination_for_pages(self):
+        iterations = random.randint(3, 10)
+        count_pages = iterations
+        visited_pages = list()
+        while iterations != 0:
+            pages = self.elements_are_visible(locators.PAGINATION_ITEMS)
+            page = random.choice(pages)
+            if "ant-pagination-item-active" not in page.get_attribute('class'):
+                page.click()
+                visited_pages.append(self.get_active_page_number())
+                iterations -= 1
+        print(visited_pages)
+        return count_pages == len(visited_pages)
+

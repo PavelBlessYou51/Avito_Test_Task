@@ -4,29 +4,25 @@ from selenium.webdriver.common.by import By
 
 # Pagination locators
 LAST_PAGINATION_ITEM = (By.XPATH, '(//ul/li[last()-2])[1]/a')
-
 NEXT_BUTTON = (By.CSS_SELECTOR, "li[title='Next Page']")
 PREVIOUS_BUTTON = (By.CSS_SELECTOR, "li[title='Previous Page']")
-
 NEXT_FIVE_PAGES_BUTTON = (By.CSS_SELECTOR, "li[title='Next 5 Pages']")
 PREVIOUS_FIVE_PAGES_BUTTON = (By.CSS_SELECTOR, "li[title='Previous 5 Pages']")
-
 SELECT_AMOUNT_CARDS = (By.CSS_SELECTOR,
-                        "div[class='ant-select ant-pagination-options-size-changer css-17a39f8 ant-select-single ant-select-show-arrow ant-select-show-search']")
+                       "div[class='ant-select ant-pagination-options-size-changer css-17a39f8 ant-select-single ant-select-show-arrow ant-select-show-search']")
 NOT_ACTIVE_PREVIOUS_BUTTON = (By.CSS_SELECTOR, "li[title='Previous Page'] button")
 NOT_ACTIVE_NEXT_BUTTON = (By.CSS_SELECTOR, "li[title='Next Page'] button")
-
 ACTIVE_PAGE_NUMBER = (By.CSS_SELECTOR, "li[class*=' ant-pagination-item-active']")
+PAGINATION_ITEMS = (By.XPATH,
+                    "(//div[@class='ant-list-pagination ant-list-pagination-align-center'])[1]/ul/li[starts-with(@class, 'ant-pagination-item ant-pagination')]")
 
 # Filter locators
 FILTERS_STATUS = (By.CSS_SELECTOR,
                   'div[class="ant-select css-17a39f8 ant-select-single ant-select-show-arrow"] span[class="ant-select-selection-item"]')
 FILTER_BY_PLATFORM = (By.XPATH, "//input[@id='rc_select_0']/parent::*/following-sibling::span")
 FILTER_BY_PLATFORM_INPUT = (By.XPATH, "//input[@id='rc_select_0']")
-
 FILTER_BY_CATEGORY = (By.XPATH, "//input[@id='rc_select_1']/parent::*/following-sibling::span")
 FILTER_BY_CATEGORY_INPUT = (By.XPATH, "//input[@id='rc_select_1']")
-
 FILTER_SORT = (By.XPATH, "//input[@id='rc_select_2']/parent::*/following-sibling::span")
 FILTER_SORT_INPUT = (By.XPATH, "//input[@id='rc_select_2']")
 
