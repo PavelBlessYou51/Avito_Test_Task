@@ -1,4 +1,4 @@
-from audioop import reverse
+import random
 
 import pytest
 
@@ -73,8 +73,30 @@ class TestBtn1Btn2:
 class TestPgn1:
 
     @pytest.mark.parametrize('type_button', ['next', 'previous'], ids=['Pgn.1', 'Pgn.2'])
-    def test_pagination_btn(self, get_driver, type_button):
+    def test_activity_pagination_btn(self, get_driver, type_button):
         main_page = MainPage(get_driver)
         main_page.open()
         button_status = main_page.check_pagination_btn(type_button)
         assert button_status == 'true', f'The {type_button} button is active'
+
+    def test_pagination_with_simple_btn(self, get_driver):
+        main_page = MainPage(get_driver)
+        main_page.open()
+        steps = random.randint(2, 4)
+        main_page.go_to_next_page(steps)
+        next_page_number = main_page.get_active_page_number()
+        main_page.go_to_previous_page(steps)
+        previous_page_number = main_page.get_active_page_number()
+        assert next_page_number == steps + 1 and previous_page_number == 1, 'The simple pagination buttons work wrong'
+
+    def test_pagination_with_five_pages_btn(self, get_driver):
+        main_page = MainPage(get_driver)
+        main_page.open()
+        steps = random.randint(2, 4)
+        main_page.go_to_next_five_page(steps)
+        next_page_number = main_page.get_active_page_number()
+        main_page.go_to_previous_five_page(steps)
+        previous_page_number = main_page.get_active_page_number()
+        assert next_page_number == steps * 5 + 1 and previous_page_number == 1, 'The pagination with five pages buttons work wrong'
+
+

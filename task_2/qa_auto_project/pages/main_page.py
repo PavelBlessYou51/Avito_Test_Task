@@ -6,8 +6,6 @@ import random
 from selenium.common import TimeoutException
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.devtools.v85.accessibility import disable
-from selenium.webdriver.remote.webelement import WebElement
 
 from task_2.qa_auto_project.pages.base_page import BasePage
 from task_2.qa_auto_project.locators import main_page_locators as locators, game_page_locators as game_locators
@@ -66,8 +64,21 @@ class MainPage(BasePage):
                 chosen_filter.send_keys(Keys.ARROW_UP)
         chosen_filter.send_keys(Keys.RETURN)
 
-    def go_to_next_page(self):
-        self.element_is_visible(locators.NEXT_BUTTON).click()
+    def go_to_next_page(self, count: int = 1):
+        for _ in range(count):
+            self.element_is_visible(locators.NEXT_BUTTON).click()
+
+    def go_to_previous_page(self, count: int = 1):
+        for _ in range(count):
+            self.element_is_visible(locators.PREVIOUS_BUTTON).click()
+
+    def go_to_next_five_page(self, count: int = 1):
+        for _ in range(count):
+            self.element_is_visible(locators.NEXT_FIVE_PAGES_BUTTON).click()
+
+    def go_to_previous_five_page(self, count: int = 1):
+        for _ in range(count):
+            self.element_is_visible(locators.PREVIOUS_FIVE_PAGES_BUTTON).click()
 
     def get_attribute_of_card(self, attribute: str) -> tuple[str]:
         attr_dict = {
@@ -97,7 +108,8 @@ class MainPage(BasePage):
             return list_titles
         else:
             list_dates = self.get_attribute_of_card('release_date')
-            result_date = list(map(lambda my_date: datetime.datetime.strptime(my_date.split()[2], '%d.%m.%Y'), list_dates))
+            result_date = list(
+                map(lambda my_date: datetime.datetime.strptime(my_date.split()[2], '%d.%m.%Y'), list_dates))
             return result_date
 
     def processing_platform(self, platform_type: str) -> bool:
@@ -153,7 +165,7 @@ class MainPage(BasePage):
         randon_card.click()
 
     # ID Pgn.17 - Pgn.23
-    def check_pagination_btn(self, type_button: str) -> str:
+    def check_activity_pagination_btn(self, type_button: str) -> str:
         if type_button == 'previous':
             button = self.element_is_presents(locators.NOT_ACTIVE_PREVIOUS_BUTTON)
         else:
@@ -162,4 +174,7 @@ class MainPage(BasePage):
         disable_status = button.get_attribute('disabled')
         return disable_status
 
-
+    def get_active_page_number(self) -> int:
+        current_page = self.element_is_visible(locators.ACTIVE_PAGE_NUMBER)
+        current_page = current_page.get_property('title')
+        return int(current_page)
