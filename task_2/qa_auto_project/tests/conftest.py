@@ -1,5 +1,4 @@
 """The module contains fixtures for test functions"""
-import time
 
 import pytest
 from selenium import webdriver
@@ -11,7 +10,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 @pytest.fixture()
 def get_driver() -> WebDriver:
-    """Creates, opens, returns and closes browser window"""
+    """Creates, opens, returns and closes the browser window"""
     options = Options()
     # options.add_argument('--headless')
     options.add_experimental_option('detach', True)
@@ -33,5 +32,6 @@ def get_driver() -> WebDriver:
     ids=['ID_Cat.2', 'ID_Cat.3', 'ID_Cat.4', 'ID_Cat.5', 'ID_Cat.6', 'ID_Cat.7', 'ID_Cat.8', 'ID_Cat.9', 'ID_Cat.10',
          'ID_Cat.11', 'ID_Cat.12', 'ID_Cat.13'])
 def provide_data_for_filters(request):
+    """Returns parameters for tests from ID Cat.2 to Cat.13"""
     return request.param
 

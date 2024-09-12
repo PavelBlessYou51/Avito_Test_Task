@@ -15,23 +15,27 @@ class MainPage(BasePage):
 
     # ID Cat.1
     def get_filters_status(self) -> tuple[str, str, str]:
+        """Returns the status of filters"""
         filters = self.elements_are_visible(locators.FILTERS_STATUS)
         platform, category, sort_by = tuple(map(lambda elem: elem.get_attribute('title'), filters))
         return platform, category, sort_by
 
     def get_cards_on_page(self, return_count: bool = True) -> int | list:
+        """Returns a list of cards on the page or their number"""
         cards = self.elements_are_visible(locators.GAME_CARDS)
         if return_count:
             return len(cards)
         return cards
 
     def go_to_last_page(self) -> int:
+        """Switches to the last page of the pagination and returns its number"""
         element = self.element_is_visible(locators.LAST_PAGINATION_ITEM)
         element.click()
         return int(element.text)
 
     # ID Cat.2 - Cat.13
     def set_filter(self, filter_type: str, value: str, reverse_filter: bool = True):
+        """Sets the filters to the specified position"""
         filter_dict = {
             'platform': {
                 'locators': (locators.FILTER_BY_PLATFORM, locators.FILTER_BY_PLATFORM_INPUT),
@@ -65,22 +69,27 @@ class MainPage(BasePage):
         chosen_filter.send_keys(Keys.RETURN)
 
     def go_to_next_page(self, count: int = 1):
+        """Switches to the next page"""
         for _ in range(count):
             self.element_is_visible(locators.NEXT_BUTTON).click()
 
     def go_to_previous_page(self, count: int = 1):
+        """Switches to the previous page"""
         for _ in range(count):
             self.element_is_visible(locators.PREVIOUS_BUTTON).click()
 
     def go_to_next_five_page(self, count: int = 1):
+        """Flips through five pages ahead"""
         for _ in range(count):
             self.element_is_visible(locators.NEXT_FIVE_PAGES_BUTTON).click()
 
     def go_to_previous_five_page(self, count: int = 1):
+        """Flips back five pages"""
         for _ in range(count):
             self.element_is_visible(locators.PREVIOUS_FIVE_PAGES_BUTTON).click()
 
     def get_attribute_of_card(self, attribute: str) -> tuple[str]:
+        """Extracts the specified attributes from the game cards located on the current page and returns them in the tuple"""
         attr_dict = {
             'title': locators.GAME_TITLE,
             'release_date': locators.GAME_RELEASE_DATE,
@@ -92,6 +101,7 @@ class MainPage(BasePage):
         return tuple_of_attr
 
     def processing_genre(self, genre: str) -> bool:
+        """Checks the correctness of the selection of the game by genre"""
         flag = True
         while flag:
             tuple_genres = self.get_attribute_of_card('genre')
@@ -103,6 +113,7 @@ class MainPage(BasePage):
         return flag
 
     def processing_sort_by(self, sort_type: str) -> list[str | datetime.datetime]:
+        """Checks whether the games are sorted correctly by the specified parameter"""
         if sort_type == 'alphabetical':
             list_titles = list(self.get_attribute_of_card('title'))
             return list_titles
@@ -113,6 +124,7 @@ class MainPage(BasePage):
             return result_date
 
     def processing_platform(self, platform_type: str) -> bool:
+        """Checks the correctness of the selection of games by genre"""
         list_of_platform = list()
         for card in range(len(self.get_cards_on_page(False))):
             list_cards = self.get_cards_on_page(False)
@@ -127,6 +139,7 @@ class MainPage(BasePage):
         return all(result)
 
     def check_amount_card_element(self) -> bool:
+        """Checks the visibility of the element that determines the number of cards on the page"""
         try:
             element = self.element_is_visible(locators.SELECT_AMOUNT_CARDS)
             return True
@@ -135,10 +148,12 @@ class MainPage(BasePage):
 
     # ID Cat.14
     def reset_filtration_by_category(self):
+        """Sets and resets filtering"""
         self.set_filter('category', 'strategy')
         self.set_filter('category', 'strategy', False)
 
     def make_screen(self) -> str:
+        """Takes a screenshot and determines the file name and path to it"""
         screen_name = 'screen' + f'-{datetime.date.today()}' + '.png'
         screen_path = self.get_dir_for_screen()
         path = screen_path + '\\' + screen_name
@@ -147,6 +162,7 @@ class MainPage(BasePage):
         return path
 
     def check_main_page(self) -> bool:
+        """Checks that the main page is open"""
         try:
             title = self.element_is_visible(locators.MAIN_PAGE_TITLE)
             return True
@@ -155,17 +171,20 @@ class MainPage(BasePage):
 
     # ID Btn.1 - Btn.2
     def click_on_back_to_main_btn(self):
+        """Clicks on the button to return to the main page"""
         button = self.element_is_clickable(game_locators.BACK_TO_MAIN_BUTTON)
         self.go_to_element(button)
         button.click()
 
     def go_into_random_card(self):
+        """Opens a randomly selected game card from the current page"""
         cards = self.get_cards_on_page(False)
         randon_card = random.choice(cards)
         randon_card.click()
 
     # ID Pgn.1 - Pgn.7
     def check_activity_pagination_btn(self, type_button: str) -> str:
+        """Checks the activity of pagination buttons"""
         if type_button == 'previous':
             button = self.element_is_presents(locators.NOT_ACTIVE_PREVIOUS_BUTTON)
         else:
@@ -175,11 +194,13 @@ class MainPage(BasePage):
         return disable_status
 
     def get_active_page_number(self) -> int:
+        """Returns the norm of the active page"""
         current_page = self.element_is_visible(locators.ACTIVE_PAGE_NUMBER)
         current_page = current_page.get_property('title')
         return int(current_page)
 
     def pagination_for_pages(self):
+        """Navigate to a random page using pagination and returns a list of visited page numbers"""
         iterations = random.randint(3, 10)
         count_pages = iterations
         visited_pages = list()
@@ -192,4 +213,3 @@ class MainPage(BasePage):
                 iterations -= 1
         print(visited_pages)
         return count_pages == len(visited_pages)
-
