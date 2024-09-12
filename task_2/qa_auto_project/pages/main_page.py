@@ -6,6 +6,7 @@ import random
 from selenium.common import TimeoutException
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.devtools.v85.accessibility import disable
 from selenium.webdriver.remote.webelement import WebElement
 
 from task_2.qa_auto_project.pages.base_page import BasePage
@@ -150,3 +151,15 @@ class MainPage(BasePage):
         cards = self.get_cards_on_page(False)
         randon_card = random.choice(cards)
         randon_card.click()
+
+    # ID Pgn.17 - Pgn.23
+    def check_pagination_btn(self, type_button: str) -> str:
+        if type_button == 'previous':
+            button = self.element_is_presents(locators.NOT_ACTIVE_PREVIOUS_BUTTON)
+        else:
+            self.go_to_last_page()
+            button = self.element_is_presents(locators.NOT_ACTIVE_NEXT_BUTTON)
+        disable_status = button.get_attribute('disabled')
+        return disable_status
+
+

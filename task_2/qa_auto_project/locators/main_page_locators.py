@@ -7,6 +7,8 @@ LAST_PAGINATION_ITEM = (By.XPATH, '(//ul/li[last()-2])[1]/a')
 NEXT_BUTTON = (By.CSS_SELECTOR, "li[title='Next Page']")
 SELECT_AMOUNT_CARDS = (By.CSS_SELECTOR,
                         "div[class='ant-select ant-pagination-options-size-changer css-17a39f8 ant-select-single ant-select-show-arrow ant-select-show-search']")
+NOT_ACTIVE_PREVIOUS_BUTTON = (By.CSS_SELECTOR, "li[title='Previous Page'] button")
+NOT_ACTIVE_NEXT_BUTTON = (By.CSS_SELECTOR, "li[title='Next Page'] button")
 
 # Filter locators
 FILTERS_STATUS = (By.CSS_SELECTOR,
